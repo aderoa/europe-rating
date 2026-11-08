@@ -47,7 +47,8 @@ td.pl{font-weight:600;overflow:visible;text-overflow:clip}
   line-height:1;padding:2px 4px 2px;border-radius:3px;margin-left:5px;
   vertical-align:2px}
 .bd-nba{background:#1d428a;color:#fff}
-.bd-nba img{display:block;height:12px;width:auto}
+.bd-logo{background:none;padding:0;vertical-align:-3px}
+.bd-logo img{display:block;height:17px;width:auto}
 .bd-dr{background:#fff;color:#8a5a00;border:1px solid #c9a24a;padding:1px 4px}
 td.tm,td.age{color:#5a5a72;font-size:12px}
 /* The NAME column is exactly as wide as the longest name in the league shown
@@ -85,7 +86,8 @@ tr:nth-child(even) td{background:#fafafd}
       h += '<tr><td class="rk">' + (i+1) + '</td><td class="fl">'
         + (r[1] ? '<img src="https://flagcdn.com/w40/' + r[1] + '.png" alt="">' : '')
         + '</td><td class="l pl">' + esc(r[0])
-        + (r[9] === "NBA" ? ' <span class="bd bd-nba" title="NBA experience">' + "NBA" + '</span>'
+        + (r[9] === "NBA" ? ' <span class="bd ' + (true ? "bd-logo" : "bd-nba")
+           + '" title="NBA experience">' + "<img src=\"https://upload.wikimedia.org/wikipedia/en/0/03/National_Basketball_Association_logo.svg\" alt=\"NBA\" onerror=\"var s=this.parentNode;s.className='bd bd-nba';s.textContent='NBA'\">" + '</span>'
            : r[9] === "Draft" ? ' <span class="bd bd-dr" title="Draft prospect">DRAFT</span>' : "")
         + '</td><td class="l tm">' + esc(r[2])
         + '</td><td class="age">' + esc(r[3]) + '</td><td class="rat">' + r[4].toFixed(2)
