@@ -43,14 +43,18 @@ td.rk{color:#9a9ab0;font-size:12px;overflow:visible}
 td.fl{padding-right:0}td.fl img{display:block;width:19px;height:auto;border-radius:2px}
 td.pl{font-weight:600;overflow:visible;text-overflow:clip}
 td.tm,td.age{color:#5a5a72;font-size:12px}
-td.tm{white-space:normal;overflow:visible;line-height:1.25;min-width:84px;width:99%}
+/* The NAME takes the spare width, never the team (v1.2.1): the team column is
+   capped and wraps inside it, so a long club name goes onto a second line
+   instead of pushing the names into a narrow column. */
+td.pl{width:99%}
+td.tm{white-space:normal;overflow:visible;line-height:1.25;min-width:84px;max-width:150px}
 td.rat{font-weight:700;color:#8a5a00}
 tr:nth-child(even) td{background:#fafafd}
 .key{color:#8a8aa0;font-size:11px;margin:8px 0 0}
 @media(max-width:560px){
   th,td{padding:5px 2px;font-size:13px}
   col.c-rk{width:26px}col.c-fl{width:22px}col.c-age{width:46px}
-  td.tm{min-width:64px}
+  td.tm{min-width:64px;max-width:96px}
   col.c-rat{width:46px}col.c-gp{width:26px}
   col.c-reb,col.c-ast{width:0}
   th.x,td.x{display:none}
