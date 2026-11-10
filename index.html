@@ -131,6 +131,26 @@ tr:nth-child(even) td{background:#fafafd}
     paths.forEach(function(p){ p.classList.remove("sel"); p.classList.remove("grp"); });
     sel.value = "";
     cur = null; curRegion = k;
+    remember("@" + k + "/" + enc(lg));
+    return true;
+  }
+  // THE ADDRESS FOLLOWS THE TABLE (v2.5): a reload, or a copied link, opens
+  // the same league. replaceState, so moving around adds no Back steps.
+  function enc(s){ return encodeURIComponent(String(s).replace(/ /g, "_")); }
+  function remember(v){
+    try { history.replaceState(null, "", location.pathname + location.search + "#" + v); }
+    catch(e) {}
+    try { sessionStorage.setItem("gr-map-view", v); } catch(e) {}
+  }
+  function restore(v){
+    if(!v) return false;
+    try { v = decodeURIComponent(v); } catch(e) { return false; }
+    var i = v.indexOf("/");
+    var head = (i < 0 ? v : v.slice(0, i)).replace(/_/g, " ");
+    var lg = i < 0 ? null : v.slice(i + 1).replace(/_/g, " ");
+    if(head.charAt(0) === "@") return CONT[head.slice(1)] ? showRegion(head.slice(1), lg) : false;
+    if(!C[head]) return false;
+    show(head, lg, true);
     return true;
   }
   function show(c, lg, fromList){
@@ -160,6 +180,7 @@ tr:nth-child(even) td{background:#fafafd}
                     function(s){ s.parentNode.appendChild(s); });
     sel.value = c;
     cur = c;
+    remember(enc(c) + "/" + enc(lg));
   }
   var cur = null;
   tabs.addEventListener("click", function(e){
@@ -184,8 +205,11 @@ tr:nth-child(even) td{background:#fafafd}
     for(var i = 0; i < order.length; i++)
       if(HOME[order[i]] === k){ show(order[i]); return; }
   }); });
-  var h = decodeURIComponent((location.hash || "").slice(1)).replace(/_/g, " ");
-  if(C[h]) show(h, null, true);
+  var saved = null;
+  try { saved = sessionStorage.getItem("gr-map-view"); } catch(e) {}
+  // A link pasted into a tab already showing the page changes only the hash.
+  window.addEventListener("hashchange", function(){ restore(location.hash.slice(1)); });
+  if(restore((location.hash || "").slice(1)) || restore(saved)) {}
   else if(!showRegion("europe")){
     var first = order.filter(function(c){ return HOME[c] === "europe"; })[0] || order[0];
     show(first);
